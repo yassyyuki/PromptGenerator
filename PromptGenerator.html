@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .category {
+            margin-bottom: 10px;
+        }
+
+        .title-checkbox {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+
+        .final {
+          margin-bottom: 200px;
+        }
+
+        .prompt {
+            margin-left: 30px;
+        }
+
+        #prompt-textbox-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            padding: 10px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            overflow-x: scroll;
+        }
+
+        #prompt-textbox {
+            width: 90%;
+            height: 100px;
+            margin-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Prompt Generator</h1>
+    <div class="container">
+        <!-- Category: 基本 -->
+        <div class="category">
+            <h3>基本</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="基本" data-title="クオリティ" data-prompt="((8k, best quality, masterpiece, ultra highres:1.2)), 1girl, young woman"> クオリティ</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+
+        <!-- Category: NSFW -->
+        <div class="category">
+            <h3>NSFW</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="NSFW" data-title="nsfw" data-prompt="nsfw"> nsfw</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="NSFW" data-title="nsfw" data-prompt="((nsfw))"> nsfw（強調）</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+
+        <!-- Category: 場所 -->
+        <div class="category">
+            <h3>場所</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="なし" data-prompt=" ">なし</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="学校の階段" data-prompt="<lora:school_stairs_v0.5:0.3> school stairs"> 学校の階段（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="学校の廊下" data-prompt="<lora:school_hallway_v0.1:0.3> school hallway"> 学校の廊下（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="学校の屋上" data-prompt="((<lora:school_rooftop_v0.1:0.3> school rooftop, chain-link fence))"> 学校の屋上（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="学校の体育館" data-prompt="((<lora:school_gym_v0.1:0.3> school gym, backlighting))"> 学校の体育館（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="学校のロッカールーム" data-prompt="<lora:locker_room_v0.1:0.3> locker room"> 学校のロッカールーム（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="学校の靴箱" data-prompt="<lora:school_lockers_v0.5:0.3>, locker"> 学校の靴箱（Lora）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="ホテルの部屋" data-prompt="bedroom"> ホテルの部屋</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="公園" data-prompt="in park"> 公園</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="温泉" data-prompt="hot spring"> 温泉</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="プール" data-prompt="pool"> プール</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="海" data-prompt="ocean"> 海</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="街中" data-prompt="in city street"> 街中</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="場所" data-title="コンサートステージ" data-prompt="at concert stage"> コンサートステージ</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 景色関連 -->
+        <div class="category">
+            <h3>景色・小物関連（複数選択可）</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連1" data-title="紅葉の木" data-prompt="(autumn leaves tree)"> 紅葉の木</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連2" data-title="紅葉の葉" data-prompt="(autumn leaves)"> 紅葉の葉</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連3" data-title="イチョウの木" data-prompt="(ginkgo tree)"> イチョウの木</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連4" data-title="イチョウの葉" data-prompt="(ginkgo biloba)"> イチョウの葉</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連5" data-title="桜" data-prompt="(cherry blossoms)"> 桜</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連6" data-title="ベージュのカーテン" data-prompt="(beige curtain)"> ベージュのカーテン</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連6" data-title="白いカーテン" data-prompt="(white curtain)"> 白いカーテン</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連7" data-title="ベッドの上" data-prompt="(on bed)"> ベッドの上</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連8" data-title="床の上（白）" data-prompt="(on white floor)"> 床の上（白）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連9" data-title="空" data-prompt="(sky)"> 空</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連10" data-title="夜空" data-prompt="(night sky)"> 夜空</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連11" data-title="星空" data-prompt="(starry sky)"> 星空</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連12" data-title="シティービュー（昼）" data-prompt="(There is a city view outside the window)"> シティービュー（昼）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連12" data-title="シティービュー（夜）" data-prompt="(There is a night city view outside the window, night)"> シティービュー（夜）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連13" data-title="木" data-prompt="(woods)"> 木</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連14" data-title="木（緑）" data-prompt="(green woods)"> 木（緑）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連15" data-title="帽子" data-prompt="(hat)"> 帽子</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連16" data-title="ヘッドホン" data-prompt="(headphones)"> ヘッドホン</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連17" data-title="床の上にパイプ椅子" data-prompt="(multiple pipe chairs on floor)"> 床の上にパイプ椅子</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連18" data-title="手にマイクを持つ" data-prompt="(holding a microphone in her hand)"> 手にマイクを持つ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="景色関連19" data-title="話し中" data-prompt="(talking)"> 話し中</label>
+
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 人混み -->
+        <div class="category">
+            <h3>人混み</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="人混み" data-title="人混み" data-prompt="((crowd))"> 人混み</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 時間帯 -->
+        <div class="category">
+            <h3>時間帯</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="時間帯" data-title="朝" data-prompt="(morning)"> 朝</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="時間帯" data-title="夕方" data-prompt="(evening)"> 夕方</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="時間帯" data-title="夜" data-prompt="(night)"> 夜</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="時間帯" data-title="日の出" data-prompt="(sunrise)"> 日の出</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="時間帯" data-title="日の入り" data-prompt="(sunset)"> 日の入り</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+
+        <!-- Category: 髪型 -->
+        <div class="category">
+            <h3>髪型</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="髪型" data-title="ロング" data-prompt="long hair"> ロング</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="髪型" data-title="ミディアム" data-prompt="medium hair"> ミディアム</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="髪型" data-title="ポニーテール" data-prompt="ponytail"> ポニーテール</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="髪型" data-title="ツインテール" data-prompt="twintails"> ツインテール</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="髪型" data-title="ボブ" data-prompt="bobcut"> ボブ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="髪型" data-title="ハーフアップ" data-prompt="half updo"> ハーフアップ</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 前髪 -->
+        <div class="category">
+            <h3>前髪</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="前髪" data-title="前髪あり" data-prompt="bangs"> 前髪あり</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 表情 -->
+        <div class="category">
+            <h3>表情</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="なし" data-prompt=" "> なし</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="無表情" data-prompt="expressionless"> 無表情</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="笑顔" data-prompt="smile facial expression"> 笑顔</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="笑顔" data-prompt="light smile"> 笑顔（微笑み）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="笑う" data-prompt="laugh"> 笑う</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="ハッピー" data-prompt="happy"> ハッピー</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="喜び" data-prompt="joy"> 喜び</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="明るい" data-prompt="cheerful"> 明るい</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="怯え" data-prompt="frightened"> 怯え</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="心配" data-prompt="afraid"> 心配</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="困る" data-prompt="upset"> 困る</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="泣き" data-prompt="tearful"> 泣き</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="表情" data-title="悲しい" data-prompt="sad facial expression"> 悲しい</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 目線 -->
+        <div class="category">
+            <h3>目線</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="目線" data-title="カメラ目線" data-prompt="(look at viewer)"> カメラ目線</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="目線" data-title="目を閉じる" data-prompt="(close eyes)"> 目を閉じる</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="目線" data-title="横目線" data-prompt="(looking side eye contact)"> 横目線</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: メガネ -->
+        <div class="category">
+            <h3>メガネ</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="メガネ" data-title="なし" data-prompt=" ">なし</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="メガネ" data-title="メガネ" data-prompt="(wearing glasses)"> メガネ</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 服装 -->
+        <div class="category">
+            <h3>服装</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="制服（長袖）" data-prompt="(school uniform, long sleeve shirt)"> 制服（長袖）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="制服（半袖）" data-prompt="(school uniform, short sleeve shirt)"> 制服（半袖）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="制服（ブレザー）" data-prompt="(school uniform, jacket/blazer)"> 制服（ブレザー）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="制服（セーラー）" data-prompt="(school uniform, sailor suit)"> 制服（セーラー）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="制服+カーディガン（ベージュ）" data-prompt="(school uniform, long sleeve shirt, beige cardigan)"> 制服+カーディガン（ベージュ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="制服+カーディガン（ピンク）" data-prompt="(school uniform,  long sleeve shirt, pink cardigan)"> 制服+カーディガン（ピンク）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="制服+カーディガン（白）" data-prompt="(school uniform,  long sleeve shirt, white cardigan)"> 制服+カーディガン（白）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="カーディガン（ベージュ）" data-prompt="(beige cardigan)"> カーディガン（ベージュ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="カーディガン（ピンク）" data-prompt="(pink cardigan)"> カーディガン（ピンク）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="カーディガン（白）" data-prompt="(white cardigan)"> カーディガン（白）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="スーツ" data-prompt="bleazer"> スーツ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="着物" data-prompt="(kimono)"> 着物</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="フード" data-prompt="(hoodie jacket)"> フード</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="Tシャツ" data-prompt="(t-shirt)"> Tシャツ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="ブラウス" data-prompt="(blouse)"> ブラウス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="セーター" data-prompt="(sweater)"> セーター</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="タンクトップ" data-prompt="(tank top)"> タンクトップ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="パジャマ" data-prompt="(pajamas)"> パジャマ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="エプロン" data-prompt="(apron)"> エプロン</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="アイドル衣装" data-prompt="(idol costume)"> アイドル衣装</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="黒いドレス" data-prompt="(little black dress)"> 黒いドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="サンドレス" data-prompt="(sundress)"> サンドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="シフトドレス" data-prompt="(shift dress)"> シフトドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="コルセットドレス" data-prompt="(corset dress)"> コルセットドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="スケータードレス" data-prompt="(skater dress)"> スケータードレス</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="タンクドレス" data-prompt="(tank dress)"> タンクドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="セータードレス" data-prompt="(sweater dress)"> セータードレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="ニットドレス" data-prompt="(knit dress)"> ニットドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="ペザントドレス" data-prompt="(peasant dress)"> ペザントドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="レイヤードドレス" data-prompt="(layered dress)"> レイヤードドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="シャツドレス" data-prompt="(shirt dress)"> シャツドレス</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="バックレスドレス" data-prompt="(backless dress)"> バックレスドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="プリーツドレス" data-prompt="(fortuny pleat)"> プリーツドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="イブニングドレス" data-prompt="(evening dress)"> イブニングドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="着物ドレス" data-prompt="(kimono dress)"> 着物ドレス</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="巫女" data-prompt="(Miko)"> 巫女</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="水着（白）" data-prompt="(white bikini)"> 水着（白）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="水着（黒）" data-prompt="(balck bikini)"> 水着（黒）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="水着（ピンク）" data-prompt="(pink bikini)"> 水着（ピンク）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="水着（青）" data-prompt="(blue bikini)"> 水着（青）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="セパレート水着（白）" data-prompt="(white Separate)"> セパレート水着（白）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="セパレート水着（黒）" data-prompt="(black Separate)"> セパレート水着（黒）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="セパレート水着（ピンク）" data-prompt="(pink Separate)"> セパレート水着（ピンク）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="セパレート水着（青）" data-prompt="(blue Separate)"> セパレート水着（青）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="レオタード水着（白）" data-prompt="(white leotard swimsuit)"> レオタード水着（白）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="レオタード水着（黒）" data-prompt="(black leotard swimsuit)"> レオタード水着（黒）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="レオタード水着（ピンク）" data-prompt="(pink leotard swimsuit)"> レオタード水着（ピンク）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="レオタード水着（青）" data-prompt="(blue leotard swimsuit)"> レオタード水着（青）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="下着のみ" data-prompt="without clothes"> 下着のみ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="服装" data-title="裸" data-prompt="((completely nude))"> 裸</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 小物関連 -->
+        <div class="category">
+            <h3>小物関連</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="小物関連" data-title="なし" data-prompt=" "> なし</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="小物関連" data-title="タオルを広げる" data-prompt="<lora:open_towel_v0.1:0.5>, open towel"> タオルを広げる（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="小物関連" data-title="タオルを肩からかける" data-prompt="<lora:towel_over_breasts_v0.1:0.5>, towel over breasts"> タオルを肩からかける（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="小物関連" data-title="ネクタイ（襟）" data-prompt="(wears necktie on the collar)"> ネクタイ（襟）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="小物関連" data-title="ネクタイ（首）" data-prompt="(wears necktie around the neck)"> ネクタイ（首）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="小物関連" data-title="制服のリボン（襟）" data-prompt="(wears bow on the collar)"> 制服のリボン（襟）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="小物関連" data-title="制服のリボン（首）" data-prompt="(wears bow around the neck)"> 制服のリボン（首）</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 下の服 -->
+        <div class="category">
+            <h3>下の服</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="下の服" data-title="スカート" data-prompt="(wearing a skirt)"> スカート</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下の服" data-title="スカート（紺）" data-prompt="(wearing a dark blue skirt)"> スカート（紺）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下の服" data-title="スカート（白）" data-prompt="(wearing a white skirt)"> スカート（白）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下の服" data-title="スカート（黒）" data-prompt="(wearing a black skirt)"> スカート（黒）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下の服" data-title="ショーパン" data-prompt="<lora:dolphin_shorts_v0.1:1>, dolphin shorts"> ショーパン（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下の服" data-title="ショーパン（ジーンズ）" data-prompt="<lora:denim_shorts_v0.2:1> 1girl, high-waist shorts"> ショーパン（ジーンズ）（Lora）</label>
+        </div>
+        <!-- Category: 下着の色 -->
+        <div class="category">
+            <h3>下着の色</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="黒（ブラのみ）" data-prompt="(black bra)">黒（ブラのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="黒（パンツのみ）" data-prompt="(black pantie)">黒（パンツのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="黒（ブラ+パンツ）" data-prompt="(black bra, black pantie)">黒（ブラ+パンツ）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="白（ブラのみ）" data-prompt="(white bra)">白（ブラのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="白（パンツのみ）" data-prompt="(white pantie)">白（パンツのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="白（ブラ+パンツ）" data-prompt="(white bra, white pantie)">白（ブラ+パンツ）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="青（ブラのみ）" data-prompt="(blue bra)">青（ブラのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="青（パンツのみ）" data-prompt="(blue pantie)">青（パンツのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="青（ブラ+パンツ）" data-prompt="(blue bra, blue pantie)">青（ブラ+パンツ）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="ピンク（ブラのみ）" data-prompt="(pink bra)">ピンク（ブラのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="ピンク（パンツのみ）" data-prompt="(pink pantie)">ピンク（パンツのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="ピンク（ブラ+パンツ）" data-prompt="(pink bra, pink pantie)">ピンク（ブラ+パンツ）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="黄色（ブラのみ）" data-prompt="(yellow bra)">黄色（ブラのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="黄色（パンツのみ）" data-prompt="(yellow pantie)">黄色（パンツのみ）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色" data-title="黄色（ブラ+パンツ）" data-prompt="(yellow bra, yellow pantie)">黄色（ブラ+パンツ）</label>
+            <br/>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色1" data-title="黒（ブラのみ）" data-prompt="((black bra))">黒（ブラのみ）（複数選択可）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色2" data-title="黒（パンツのみ）" data-prompt="((black pantie))">黒（パンツのみ）（複数選択可）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色3" data-title="白（ブラのみ）" data-prompt="((white bra))">白（ブラのみ）（複数選択可）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色4" data-title="白（パンツのみ）" data-prompt="((white pantie))">白（パンツのみ）（複数選択可）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色5" data-title="青（ブラのみ）" data-prompt="((blue bra))">青（ブラのみ）（複数選択可）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色6" data-title="青（パンツのみ）" data-prompt="((blue pantie))">青（パンツのみ）（複数選択可）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色7" data-title="ピンク（ブラのみ）" data-prompt="((pink bra))">ピンク（ブラのみ）（複数選択可）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色8" data-title="ピンク（パンツのみ）" data-prompt="((pink pantie))">ピンク（パンツのみ）（複数選択可）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色9" data-title="黄色（ブラのみ）" data-prompt="((yellow bra))">黄色（ブラのみ）（複数選択可）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="下着の色10" data-title="黄色（パンツのみ）" data-prompt="((yellow pantie))">黄色（パンツのみ）（複数選択可）</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: パンチラ -->
+        <div class="category">
+            <h3>パンチラ</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="パンチラ" data-title="パンツが見える" data-prompt="(showing pantie)"> パンツが見える</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="パンチラ" data-title="シートリフト" data-prompt="shirtlift <lora:shirtliftv3:0.8>"> シートリフト（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="パンチラ" data-title="スカートリフト" data-prompt="<lora:skirtlift-v4:0.5>, (showing pantie)"> スカートリフト（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="パンチラ" data-title="アクシデント（リュック）" data-prompt="<lora:accidental_exposure:1.0>, backpack, (showing panty)"> アクシデント（リュック）（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="パンチラ" data-title="風" data-prompt="<lora:WindyUpskirt:0.3>, windy, WindyUpskirt, (showing pantie)"> 風（Lora）</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: パンティライン（おしり） -->
+        <div class="category">
+            <h3>パンティライン（おしり）</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="パンティライン（おしり）" data-title="パンティライン" data-prompt="<lora:pantylines_v0.1:1>, ass, pantylines"> パンティライン（Lora）</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 上半身裸 -->
+        <div class="category">
+            <h3>上半身裸</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="上半身裸" data-title="上半身裸" data-prompt="((shirtless))"> 上半身裸</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 胸のサイズ -->
+        <div class="category">
+            <h3>胸のサイズ</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="胸のサイズ" data-title="なし" data-prompt=" "> なし</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="胸のサイズ" data-title="大きい" data-prompt="large breast"> 大きい</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="胸のサイズ" data-title="小さい" data-prompt="small breast"> 小さい</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 胸が確実に見えるように -->
+        <div class="category">
+            <h3>強調したい部分（複数選択可）</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="強調したい1" data-title="乳首" data-prompt="((nipple))"> 乳首</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="強調したい2" data-title="おしり" data-prompt="((ass))"> おしり</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="強調したい3" data-title="まんこ" data-prompt="((pussy))"> まんこ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="強調したい4" data-title="乳首+まんこ" data-prompt="((nipple, pussy))"> 乳首+まんこ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="強調したい5" data-title="おしり+まんこ" data-prompt="((ass, pussy))"> おしり+まんこ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="強調したい6" data-title="精子" data-prompt="((creampie, cum))"> 精子</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="強調したい7" data-title="スカート" data-prompt="((skirt))"> スカート</label>
+
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 汗 -->
+        <div class="category">
+            <h3>汗</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="汗" data-title="なし" data-prompt=" ">なし</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="汗" data-title="汗" data-prompt="(sweat)"> 汗</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: アンダーヘア -->
+        <div class="category">
+            <h3>アンダーヘア</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="あり" data-title="アンダーヘア" data-prompt="((public hair))"> あり</label>
+            <!-- <label class="title-checkbox"><input type="checkbox" data-category="なし" data-title="アンダーヘア" data-prompt="((without public hair))"> なし</label> -->
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: SEX -->
+        <div class="category">
+            <h3>SEX</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX" data-title="SEX" data-prompt="(having sex)"> SEX</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 手の位置 -->
+        <div class="category">
+            <h3>手の位置</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="なし" data-prompt=" ">なし</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="腕を上げる" data-prompt="(arms up)"> 腕を上げる</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="頭の後ろで組む" data-prompt="(arms behind head)"> 頭の後ろで組む</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="両手を広げる" data-prompt="(spread arms)"> 両手を広げる</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="腕を組む" data-prompt="(crossed arms)"> 腕を組む</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="スカートの裾を掴む" data-prompt="<lora:skirt_tug_v0.1:0.3>, clothes tug, skirt"> スカートの裾を掴む（Lora）</label>
+            <!-- 他のタイトルも同様に追加 -->
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="両手を頭の上に手を置く" data-prompt="(hands above on the head)"> 両手を頭の上に手を置く</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="左手を頭の上に手を置く" data-prompt="(left above on the head)"> 左手を頭の上に手を置く</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="右手を頭の上に手を置く" data-prompt="(right above on the head)"> 右手を頭の上に手を置く</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="膝に手を置く" data-prompt="(hands on knees)"> 膝に手を置く</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="腰に手を当てる" data-prompt="(Hands on hips)"> 腰に手を当てる</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="ポケットに手に入れる" data-prompt="(Hands in pockets)"> ポケットに手に入れる</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="胸に手を置く" data-prompt="(hands on chest)"> 胸に手を置く</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="顎の下に手" data-prompt="(stroking own chin)"> 顎の下に手</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="脇を見せる" data-prompt="(armpits)"> 脇を見せる</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="胸の下で腕を組む" data-prompt="(clossed arms under chest)"> 胸の下で腕を組む</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="脚と脚の間に手を置く" data-prompt="(hand between legs)"> 脚と脚の間に手を置く</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="手の位置" data-title="パンツの中（Lora）" data-prompt="<lora:hand_in_panties_v0.82:1.0>, ((hand in panties))"> パンツの中（Lora）</label>
+        </div>
+        <!-- Category: 指 -->
+        <div class="category">
+            <h3>指</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="指" data-title="ピースサイン" data-prompt="(peace sign)"> ピースサイン</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="指" data-title="親指を立てる" data-prompt="(Thumbs up)"> 親指を立てる</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="指" data-title="指で銃" data-prompt="(Finger guns)"> 指で銃</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="指" data-title="ハイタッチ" data-prompt="(High five)"> ハイタッチ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="指" data-title="拳を合わせる" data-prompt="(Fist bump)"> 拳を合わせる</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="指" data-title="手を振る" data-prompt="(Waving gesture)"> 手を振る</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="指" data-title="指を差す" data-prompt="(Pointing gesture)"> 指を差す</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="指" data-title="敬礼" data-prompt="(salute)"> 敬礼</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="指" data-title="数字の１を表す" data-prompt="(one index finger)"> 数字の１を表す</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 足 -->
+        <div class="category">
+            <h3>足</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="足" data-title="開脚" data-prompt="(spread legs)"> 開脚</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="足" data-title="足を組む" data-prompt="(Crossed legs)"> 足を組む</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="足" data-title="足を上げる" data-prompt="(legs up)"> 足を上げる</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="足" data-title="片足膝をつく" data-prompt="(kneeling on one leg)"> 片足膝をつく</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 姿勢 -->
+        <div class="category">
+            <h3>姿勢</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="立ち" data-prompt="standing"> 立ち</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="座り" data-prompt="sitting"> 座り</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="踊っている" data-prompt="dancing"> 踊っている</label>
+            <!-- <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="片足上げる" data-prompt="standing, (leg up)"> 片足上げる</label> -->
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="おしりをつきだす（Lora）" data-prompt="((lie on one’s back))"> おしりをつきだす（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="仰向け" data-prompt="(lying, on back)"> 仰向け（※景色に注意）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="仰向け（床）" data-prompt="(lying on floor)"> 仰向け（床）（※景色に注意）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="仰向け（白い床）" data-prompt="(lying on white floor)"> 仰向け（白い床）（※景色に注意）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="しゃがみ" data-prompt="squatting"> しゃがみ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="しゃがみ（足開き）" data-prompt="<lora:splitSitting:0.7> squatting"> しゃがみ（足開き）（Lora）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="正常位" data-prompt="((spreading legs, lying))"> 正常位</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="正常位（ベッドの上）" data-prompt="((spreading legs, lying on bed))"> 正常位（ベッドの上）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="後背位" data-prompt="((ass up wait feet,<lora:ass_up_wait_feet.v2:0.5>,))"> 後背位</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="騎乗位" data-prompt="<lora:PSCowgirl:0.9>, 1boy, squatting cowgirl position, vaginal, pov, squatting"> 騎乗位（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="騎乗位（後ろ）" data-prompt="<lora:POVDoggy: 0.7>, 1boy, from behind"> 騎乗位（後ろ）（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="開脚" data-prompt="spread legs"> 開脚</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="M字" data-prompt="<lora:mlegs1:0.7> sitting"> M字（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="体育座り" data-prompt="<lora:hugging_own_legs_v0.3:0.7> hugging own legs, sitting"> 体育座り（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="姿勢" data-title="パンツ脱ぎ中" data-prompt="<lora:undressing_panties_v0.1:1.0> , (((panty pull, undressing, pulled by self)))"> パンツ脱ぎ中（Lora）</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: カメラアングル -->
+        <div class="category">
+            <h3>カメラアングル</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="カメラアングル" data-title="前" data-prompt="from front"> 前</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="カメラアングル" data-title="後ろ" data-prompt="from behind"> 後ろ</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="カメラアングル" data-title="上" data-prompt="from above"> 上</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="カメラアングル" data-title="下" data-prompt="from below"> 下</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="カメラアングル" data-title="横" data-prompt="from side"> 横</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <div class="category">
+            <h3>撮影範囲</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="撮影範囲" data-title="全身" data-prompt="((full body))"> 全身</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="撮影範囲" data-title="上半身" data-prompt="(upper body)"> 上半身</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="撮影範囲" data-title="上半身" data-prompt="(lower body)"> 下半身</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: SEX姿勢+カメラアングル -->
+        <div class="category">
+            <h3>SEX姿勢+カメラアングル</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="正常位" data-prompt="((spreading legs getting missionary vaginal fucked, lying on bed))"> 正常位</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="正常位（Lora）（ベッドの上）" data-prompt="<lora:PovMissionaryVaginal-v1:0.2>, ((spreading legs getting missionary vaginal fucked, lying on bed))"> 正常位（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="正常位" data-prompt="((spreading legs getting missionary vaginal fucked, lying on bed))"> 正常位（ベッドの上）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="正常位（Lora）（ベッドの上）" data-prompt="<lora:PovMissionaryVaginal-v1:0.2>, ((spreading legs getting missionary vaginal fucked, lying on bed))"> 正常位（Lora）（ベッドの上）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="騎乗位" data-prompt="<lora:PSCowgirl:0.8>, 1boy, penis, squatting cowgirl position, vaginal, pov, squatting"> 騎乗位（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="騎乗位（後ろ）" data-prompt="<lora:POVDoggy: 0.7>, 1boy, (perfect penis), from behind"> 騎乗位（後ろ）（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="騎乗位（ディルド）" data-prompt="<lora:dildoRiding2-000005:1>, solo"> 騎乗位（ディルド）（Lora）</label>
+            <br/>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="後背位" data-prompt="<lora:POVDoggy:0.9>, 1boy, penis, doggystyle, from back"> 後背位（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="後背位（うつぶせ）" data-prompt="<lora:ProneboneVaginal-v3:0.7>,  getting fucked from behind, perfect penis, perfect face"> 後背位（うつぶせ）（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="アナル" data-prompt="<lora:PovMissionaryAnal-v6:0.4> getting missionary anal fucked by penis"> アナル（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="手コキ" data-prompt="<lora:cuddling_handjob_v0.1b:1>, (cuddling handjob, pov, (perfect penis))"> 手コキ（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="正常位（下着ありLora）" data-prompt="<lora:Concept_PantiesAside_1.1:1:lbw=DEF>, lying on back, spread legs"> 正常位（下着ありLora）（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="SEX姿勢+カメラアングル" data-title="正常位（下着ありLora2）" data-prompt="<lora:panties_pulled_aside_fuck.v1.0:0.9>, panties pulled aside fuck, spread legs"> 正常位（下着ありLora2）（Lora）</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: ぶっかけ -->
+        <div class="category">
+            <h3>ぶっかけ</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="ぶっかけ" data-title="ぶっかけ１" data-prompt="<lora:Bukkake:0.5, bukkake, cum on body, (cum on face)"> ぶっかけ１（Lora）</label>
+            <label class="title-checkbox"><input type="checkbox" data-category="ぶっかけ" data-title="ぶっかけ２" data-prompt="<lora:bukkake_v0.4:0.5>, bukkake, excessive cum, cum on body, cum on face"> ぶっかけ２（Lora）</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: 中出し -->
+        <div class="category">
+            <h3>中出し</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="中出し" data-title="中出し" data-prompt="((cum, cum in pussy, cumdrip, creampie)), <lora:Creampie_v11:0.1>"> 中出し</label>
+            <!-- 他のタイトルも同様に追加 -->
+        </div>
+        <!-- Category: ペニスなし -->
+        <!-- <div class="category">
+            <h3>ペニスなし</h3>
+            <label class="title-checkbox"><input type="checkbox" data-category="ペニスなし" data-title="ペニスなし" data-prompt="(no penis)"> ペニスなし</label>
+        </div> -->
+        <!-- 他のカテゴリーも同様に追加 -->
+    </div>
+
+    <div class="container final">
+        <h1>Negative prompt</h1>
+        <p>EasyNegative, (EasyNegativeV2:1.2), (worst quality:2) (low quality:2) (low quality:2) (normal quality:2) lowers normal quality ((monochrome)) ((grayscale)), skin spots, acnes, skin blemishes, age spot, ugly face, fat, missing fingers, extra fingers, extra arms, skin, ((extra legs)), ((tattoo)), scratch, 2girls, hat, blond hair, jpeg artifacts, signature, watermark, username, blurry, artist name, ((chain)), ((penis)),(multiple penis), (bra)</p>
+    </div>
+
+    <div id="prompt-textbox-container">
+        <h1 class="prompt">Prompt</h1>
+        <textarea id="prompt-textbox" readonly></textarea>
+    </div>
+
+    <script>
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const promptTextbox = document.getElementById('prompt-textbox');
+
+      checkboxes.forEach(checkbox => {
+          checkbox.addEventListener('change', () => {
+              const selectedPrompts = {};
+
+              checkboxes.forEach(checkbox => {
+                  if (checkbox.checked) {
+                      const category = checkbox.getAttribute('data-category');
+                      const title = checkbox.getAttribute('data-title');
+                      const prompt = checkbox.getAttribute('data-prompt');
+
+                      if (!selectedPrompts[category]) {
+                          selectedPrompts[category] = [];
+                      }
+
+                      selectedPrompts[category].push(prompt);
+                  }
+              });
+
+              let prompts = [];
+              for (const [category, categoryPrompts] of Object.entries(selectedPrompts)) {
+                  if (categoryPrompts.length == 1) {
+                      prompts.push(`${categoryPrompts.join(' | ')}`);
+                  } if (categoryPrompts.length > 1) {
+                    prompts.push(`{${categoryPrompts.join(' | ')}}`);
+                  }
+              }
+              promptTextbox.value = prompts.join(', ');
+          });
+      });
+  </script>
+</body>
+</html>
